@@ -19,3 +19,7 @@ Route::get('/', function () {
 });
 
 Route::get('books', [TestController::class, 'books']);
+
+Route::get('contact-us',[TestController::class,'contactUs']);
+Route::get('about-us',[TestController::class,'aboutUs']);
+Route::get('home',[TestController::class,'home']);
