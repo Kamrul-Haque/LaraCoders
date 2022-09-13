@@ -3,19 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\TestModel;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
 class TestController extends Controller
 {
-    public function books(Request $request)
+    public function test(Request $request)
     {
         $test = TestModel::$globalDate;
 
-        $random = rand(1,9);
+        $random = rand(1, 9);
 
-        return View::make('welcome',compact('test','random'));
+        return View::make('test', compact('test', 'random'));
     }
 
     public function contactUs()
