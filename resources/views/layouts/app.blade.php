@@ -32,6 +32,8 @@
 @include('partials.header')
 
 <div class="container-fluid my-4">
+    @include('partials.alert')
+    <br>
     @yield('content')
 </div>
 

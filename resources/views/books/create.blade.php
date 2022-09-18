@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container d-flex justify-content-center">
-        <div class="card w-50">
+        <div class="card shadow border-0 rounded w-50">
             <div class="card-body">
                 <h4 class="text-center">Create Book</h4>
                 <form action="{{ route('books.store') }}"

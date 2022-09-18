@@ -2,11 +2,12 @@
 
 @section('content')
     <div class="container d-flex justify-content-center">
-        <div class="card w-50">
+        <div class="card shadow border-0 rounded w-50">
             <div class="card-body">
                 <h4 class="text-center">Edit Book</h4>
                 <form action="{{ route('books.update',$book) }}"
                       method="post">
+                    @method('PUT')
                     @csrf
                     <div class="form-group my-3">
                         <label for="title">Title</label>

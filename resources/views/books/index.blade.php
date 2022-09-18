@@ -3,17 +3,17 @@
 @section('content')
     <div class="container">
         <div class="d-flex justify-content-between">
-            <h4>Books</h4>
+            <h2>Books</h2>
             <div class="flex-column">
                 <a href="{{ route('books.create') }}"
-                   class="btn btn-success btn-sm">
+                   class="btn btn-success rounded-pill">
                     <i class="fa fa-plus"></i>
                     Create
                 </a>
             </div>
         </div>
         <br>
-        <div class="card">
+        <div class="card shadow border-0 rounded">
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table">
@@ -41,14 +41,21 @@
                                 <td>{{ $book->isbn }}</td>
                                 <td class="d-flex">
                                     <div class="flex-column">
-                                        <a href="{{ route('books.edit', $book->id) }}"
+                                        <a href="{{ route('books.show', $book) }}"
+                                           class="btn btn-dark btn-sm">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    </div>
+                                    <div class="flex-column">
+                                        <a href="{{ route('books.edit', $book) }}"
                                            class="btn btn-primary btn-sm">
                                             <i class="fa fa-pencil"></i>
                                         </a>
                                     </div>
-                                    <form action="{{ route('books.destroy', $book->id) }}"
+                                    <form action="{{ route('books.destroy', $book) }}"
                                           method="post"
                                           class="flex-column ml-1">
+                                        @method('DELETE')
                                         @csrf
                                         <button type="submit"
                                                 class="btn btn-danger btn-sm">
