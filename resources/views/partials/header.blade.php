@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-primary navbar-dark">
+<nav class="navbar navbar-expand-lg shadow">
     <div class="container">
         <a class="navbar-brand"
            href="{{ config('app.url') }}">{{ config('app.name') }}</a>
@@ -18,6 +18,16 @@
                     <a class="nav-link"
                        aria-current="page"
                        href="{{ url('home') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       aria-current="page"
+                       href="{{ route('authors.index') }}">Authors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       aria-current="page"
+                       href="{{ route('publishers.index') }}">Publishers</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"

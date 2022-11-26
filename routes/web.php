@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +28,7 @@ Route::get('about-us', [TestController::class, 'aboutUs']);
 Route::get('home', [TestController::class, 'home']);
 
 Route::resource('books', BookController::class);
+Route::get('books/{book}/assign-author', [BookController::class, 'assignAuthorForm'])->name('books.assign-author.form');
+Route::post('books/{book}/assign-author', [BookController::class, 'assignAuthor'])->name('books.assign-author');
+Route::resource('publishers', PublisherController::class);
+Route::resource('authors', AuthorController::class);

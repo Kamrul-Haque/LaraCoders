@@ -13,21 +13,11 @@
                     </tr>
                     <tr>
                         <th>Author</th>
-                        <td>
-                            @foreach($book->authors as $author)
-                                {{ $author->name }}
-                                @if($author->pivot->royalty)
-                                    [Royalty: {{ $author->pivot->royalty }}]
-                                @endif
-                                @continue($loop->last),
-                            @endforeach
-                            <a href="{{ route('books.assign-author.form', $book) }}"
-                               class="btn btn-outline-primary btn-sm">Add</a>
-                        </td>
+                        <td>{{ $book->author }}</td>
                     </tr>
                     <tr>
                         <th>Publisher</th>
-                        <td>{{ $book->publisher->name }}</td>
+                        <td>{{ $book->publisher }}</td>
                     </tr>
                     <tr>
                         <th>Publishing Date</th>
