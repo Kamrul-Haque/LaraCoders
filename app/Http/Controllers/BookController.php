@@ -44,8 +44,8 @@ class BookController extends Controller
 
         if ($request->hasFile('cover_image'))
         {
-            if (Storage::exists($book->cover_image))
-                Storage::delete($book->cover_image);
+            if (Storage::disk('s3')->exists($book->cover_image))
+                Storage::disk('s3')->delete($book->cover_image);
 
             $valid['cover_image'] = $request->file('cover_image')->store('BookImages');
         }
@@ -70,7 +70,7 @@ class BookController extends Controller
         ]);
 
         if ($request->hasFile('cover_image'))
-            $valid['cover_image'] = $request->file('cover_image')->store('BookImages');
+            $valid['cover_image'] = $request->file('cover_image')->store('BookImages', 's3');
 
         if (Book::create($valid))
             return redirect()->route('books.index')->with('success', 'Book Created Successfully');
@@ -123,6 +123,15 @@ class BookController extends Controller
 
     public function bookImage(Book $book)
     {
-        return response()->file(Storage::path($book->cover_image));
+        try
+        {
+            $image = Storage::disk('s3')->get($book->cover_image);
+
+            return response($image)->header('Content-Type', 'image');
+        }
+        catch (\Exception $exception)
+        {
+            return $exception->getMessage();
+        }
     }
 }
