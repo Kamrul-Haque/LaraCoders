@@ -47,7 +47,7 @@ class BookController extends Controller
             if (Storage::disk('s3')->exists($book->cover_image))
                 Storage::disk('s3')->delete($book->cover_image);
 
-            $valid['cover_image'] = $request->file('cover_image')->store('BookImages');
+            $valid['cover_image'] = $request->file('cover_image')->store('BookImages', 's3');
         }
 
         if ($book->update($valid))
