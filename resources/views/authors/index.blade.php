@@ -20,6 +20,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th>Photo</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -31,6 +32,15 @@
                         @foreach($authors as $author)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    @if($author->photo)
+                                        <img src="{{ $author->photo }}"
+                                             height="35px"
+                                             alt="photo">
+                                    @else
+                                        NULL
+                                    @endif
+                                </td>
                                 <td>{{ $author->name }}</td>
                                 <td>{{ $author->phone }}</td>
                                 <td>{{ $author->email }}</td>

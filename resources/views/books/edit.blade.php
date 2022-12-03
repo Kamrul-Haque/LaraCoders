@@ -6,7 +6,8 @@
             <div class="card-body">
                 <h4 class="text-center">Edit Book</h4>
                 <form action="{{ route('books.update',$book) }}"
-                      method="post">
+                      method="post"
+                      enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <div class="form-group my-3">
@@ -101,6 +102,23 @@
                                class="form-control"
                                value="{{ old('price') ?? $book->price }}">
                         @error('price')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group my-3">
+                        @if($book->cover_image)
+                            <img src="{{ route('books.image', $book) }}"
+                                 width="50px"
+                                 alt="cover">
+                            <br>
+                        @endif
+                        <label for="cover_image">Cover Image</label>
+                        <input type="file"
+                               name="cover_image"
+                               id="cover_image"
+                               class="form-control"
+                               value="{{ old('cover_image') }}">
+                        @error('cover_image')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>

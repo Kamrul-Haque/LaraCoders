@@ -6,6 +6,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -14,31 +15,6 @@ class BookController extends Controller
         $books = Book::latest()->paginate();
 
         return view('books.index', compact('books'));
-    }
-
-    public function store(Request $request)
-    {
-        $valid = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'publisher_id' => ['required', 'integer'],
-            'publishing_date' => ['required', 'date', 'before_or_equal:today'],
-            'latest_printing_date' => ['required', 'date', 'before_or_equal:today', 'after_or_equal:publishing_date'],
-            'isbn' => ['required', 'integer', 'digits_between:5,10', 'unique:books'],
-            'pages' => ['nullable', 'integer', 'max:9999'],
-            'price' => ['nullable', 'numeric', 'gt:0'],
-        ]);
-
-        if (Book::create($valid))
-            return redirect()->route('books.index')->with('success', 'Book Created Successfully');
-
-        return back()->with('error', 'Something went wrong');
-    }
-
-    public function create()
-    {
-        $publishers = Publisher::orderBy('name')->get();
-
-        return view('books.create', compact('publishers'));
     }
 
     public function show(Book $book)
@@ -63,12 +39,50 @@ class BookController extends Controller
             'isbn' => ['required', 'integer', 'digits_between:5,10', 'unique:books,isbn,' . $book->id],
             'pages' => ['nullable', 'integer', 'max:9999'],
             'price' => ['nullable', 'numeric', 'gt:0'],
+            'cover_image' => ['nullable', 'image', 'max:2048'],
         ]);
+
+        if ($request->hasFile('cover_image'))
+        {
+            if (Storage::exists($book->cover_image))
+                Storage::delete($book->cover_image);
+
+            $valid['cover_image'] = $request->file('cover_image')->store('BookImages');
+        }
 
         if ($book->update($valid))
             return redirect()->route('books.index')->with('success', 'Book Updated Successfully');
 
         return back()->with('error', 'Something went wrong');
+    }
+
+    public function store(Request $request)
+    {
+        $valid = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'publisher_id' => ['required', 'integer'],
+            'publishing_date' => ['required', 'date', 'before_or_equal:today'],
+            'latest_printing_date' => ['required', 'date', 'before_or_equal:today', 'after_or_equal:publishing_date'],
+            'isbn' => ['required', 'integer', 'digits_between:5,10', 'unique:books'],
+            'pages' => ['nullable', 'integer', 'max:9999'],
+            'price' => ['nullable', 'numeric', 'gt:0'],
+            'cover_image' => ['nullable', 'image', 'max:2048'],
+        ]);
+
+        if ($request->hasFile('cover_image'))
+            $valid['cover_image'] = $request->file('cover_image')->store('BookImages');
+
+        if (Book::create($valid))
+            return redirect()->route('books.index')->with('success', 'Book Created Successfully');
+
+        return back()->with('error', 'Something went wrong');
+    }
+
+    public function create()
+    {
+        $publishers = Publisher::orderBy('name')->get();
+
+        return view('books.create', compact('publishers'));
     }
 
     public function destroy(Book $book)
@@ -97,5 +111,18 @@ class BookController extends Controller
             return redirect()->route('books.show', $book)->with('success', 'Author Assigned Successfully');
 
         return back()->with('error', 'Something went wrong');
+    }
+
+    public function removeAuthor(Book $book, Author $author)
+    {
+        if ($book->authors()->detach($author))
+            return redirect()->route('books.show', $book)->with('success', 'Author Removed Successfully');
+
+        return back()->with('error', 'Something went wrong');
+    }
+
+    public function bookImage(Book $book)
+    {
+        return response()->file(Storage::path($book->cover_image));
     }
 }

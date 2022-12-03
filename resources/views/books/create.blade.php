@@ -6,7 +6,8 @@
             <div class="card-body">
                 <h4 class="text-center">Create Book</h4>
                 <form action="{{ route('books.store') }}"
-                      method="post">
+                      method="post"
+                      enctype="multipart/form-data">
                     @csrf
                     <div class="form-group my-3">
                         <label for="title">Title</label>
@@ -102,6 +103,17 @@
                                class="form-control"
                                value="{{ old('price') }}">
                         @error('price')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group my-3">
+                        <label for="cover_image">Cover Image</label>
+                        <input type="file"
+                               name="cover_image"
+                               id="cover_image"
+                               class="form-control"
+                               value="{{ old('cover_image') }}">
+                        @error('cover_image')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>

@@ -6,7 +6,8 @@
             <div class="card-body">
                 <h4 class="text-center">Edit Author</h4>
                 <form action="{{ route('authors.update', $author) }}"
-                      method="post">
+                      method="post"
+                      enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <div class="form-group my-3">
@@ -55,6 +56,23 @@
                                   class="form-control"
                                   required>{{ old('address') ?? $author->address }}</textarea>
                         @error('address')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group my-3">
+                        @if($author->photo)
+                            <img src="{{ $author->photo }}"
+                                 height="35px"
+                                 alt="photo">
+                            <br>
+                        @endif
+                        <label for="photo">Photo</label>
+                        <input type="file"
+                               name="photo"
+                               id="photo"
+                               class="form-control">
+                        @error('photo')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>

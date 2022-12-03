@@ -6,7 +6,8 @@
             <div class="card-body">
                 <h4 class="text-center">Create Author</h4>
                 <form action="{{ route('authors.store') }}"
-                      method="post">
+                      method="post"
+                      enctype="multipart/form-data">
                     @csrf
                     <div class="form-group my-3">
                         <label for="name">Title</label>
@@ -54,6 +55,17 @@
                                   class="form-control"
                                   required>{{ old('address') }}</textarea>
                         @error('address')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group my-3">
+                        <label for="photo">Photo</label>
+                        <input type="file"
+                               name="photo"
+                               id="photo"
+                               class="form-control">
+                        @error('photo')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>

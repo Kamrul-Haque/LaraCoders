@@ -20,11 +20,8 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th>Cover</th>
                             <th>Title</th>
-                            <th>Author</th>
-                            <th>Publisher</th>
-                            <th>Publishing Date</th>
-                            <th>Latest Printing Date</th>
                             <th>ISBN</th>
                             <th>Pages</th>
                             <th>Price</th>
@@ -35,11 +32,13 @@
                         @foreach($books as $book)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    <img src="{{ route('books.image', $book) }}"
+                                         width="35px"
+                                         height="auto"
+                                         alt="cover">
+                                </td>
                                 <td>{{ $book->title }}</td>
-                                <td>{{ $book->author }}</td>
-                                <td>{{ $book->publisher->name }}</td>
-                                <td>{{ $book->publishing_date }}</td>
-                                <td>{{ $book->latest_printing_date }}</td>
                                 <td>{{ $book->isbn }}</td>
                                 <td>{{ $book->pages }}</td>
                                 <td>{{ $book->price }}</td>
