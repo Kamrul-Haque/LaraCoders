@@ -42,12 +42,18 @@ class BookController extends Controller
             'cover_image' => ['nullable', 'image', 'max:2048'],
         ]);
 
-        if ($request->hasFile('cover_image'))
-        {
-            if (Storage::disk('s3')->exists($book->cover_image))
-                Storage::disk('s3')->delete($book->cover_image);
+        if ($request->hasFile('cover_image')) {
+            try
+            {
+                if (Storage::disk('s3')->exists($book->cover_image))
+                    Storage::disk('s3')->delete($book->cover_image);
 
-            $valid['cover_image'] = $request->file('cover_image')->store('BookImages', 's3');
+                $valid['cover_image'] = $request->file('cover_image')->store('BookImages', 's3');
+            }
+            catch (\Exception $exception)
+            {
+                return back()->with('error', $exception->getMessage());
+            }
         }
 
         if ($book->update($valid))
@@ -70,7 +76,16 @@ class BookController extends Controller
         ]);
 
         if ($request->hasFile('cover_image'))
-            $valid['cover_image'] = $request->file('cover_image')->store('BookImages', 's3');
+        {
+            try
+            {
+                $valid['cover_image'] = $request->file('cover_image')->store('BookImages', 's3');
+            }
+            catch (\Exception $exception)
+            {
+                return back()->with('error', $exception->getMessage());
+            }
+        }
 
         if (Book::create($valid))
             return redirect()->route('books.index')->with('success', 'Book Created Successfully');
@@ -123,14 +138,12 @@ class BookController extends Controller
 
     public function bookImage(Book $book)
     {
-        try
-        {
+        try {
             $image = Storage::disk('s3')->get($book->cover_image);
 
             return response($image)->header('Content-Type', 'image');
         }
-        catch (\Exception $exception)
-        {
+        catch (\Exception $exception) {
             return $exception->getMessage();
         }
     }

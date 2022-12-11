@@ -17,6 +17,8 @@ class Book extends Model
 
     public function authors(): BelongsToMany
     {
-        return $this->belongsToMany(Author::class)->withPivot(['royalty'])->withTimestamps();
+        return $this->belongsToMany(Author::class)
+            ->withPivot(['royalty'])
+            ->withTimestamps();
     }
 }
