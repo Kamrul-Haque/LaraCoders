@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 */
 
-Route::apiResource('books',Api\BookController::class);
-Route::get('publishers',Api\PublisherController::class);
+Route::apiResource('books', Api\BookController::class);
+Route::get('publishers', Api\PublisherController::class);
+
+Route::post('checkout', Api\CheckoutController::class);

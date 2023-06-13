@@ -4,7 +4,7 @@
 
 echo Installing Composer Dependencies
 
-call composer install
+call composer update
 
 echo Installing Node Modules
 
